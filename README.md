@@ -22,7 +22,7 @@ Core requirements are as follows:
 -  A Stored Function 
 -  An Example Query with a Subquery
 -  DB diagram
-Advanced requirements:
+- Advanced requirements:
 - Trigger(s)
 -  An Example Query with group by and having 
 These requirements are clearly defined in the project document.
