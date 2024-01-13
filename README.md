@@ -25,4 +25,4 @@ Following an eight-week Code First Girls Kickstarter Data and SQL Course from Se
 ## Advanced requirements:
 - Trigger(s)
 -  An Example Query with group by and having 
-These requirements are clearly defined in the project document.
+##These requirements are clearly defined in the project document.
