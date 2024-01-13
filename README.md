@@ -21,7 +21,7 @@ Following an eight-week Code First Girls Kickstarter Data and SQL Course from Se
 -  A View
 -  A Stored Function 
 -  An Example Query with a Subquery
--  DB diagram
+-  DB diagram (Featured as a comment on the project document)
 ## Advanced requirements:
 - Trigger(s)
 -  An Example Query with group by and having
