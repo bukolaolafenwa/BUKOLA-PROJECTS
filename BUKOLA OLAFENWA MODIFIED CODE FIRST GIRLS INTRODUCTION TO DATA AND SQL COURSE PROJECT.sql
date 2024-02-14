@@ -8,30 +8,30 @@
 -- Primary and foreign keys are, especially, better defined 
 -- Four updates are featured to test the triggers in the database in the advanced options
 
-CREATE DATABASE ExpressGrocery;
+CREATE DATABASE express_grocery;
 
-USE ExpressGrocery;
+USE express_grocery;
 
 -- TABLE CATEGORIES
-CREATE TABLE Categories
-(ID INT PRIMARY KEY AUTO_INCREMENT,
-Category_Name VARCHAR(30) NOT NULL,
-Date_Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-Date_Modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE categories
+(category_id INT PRIMARY KEY AUTO_INCREMENT,
+category_name VARCHAR(30) NOT NULL,
+date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER Categories_before_insert
-BEFORE INSERT ON Categories
+CREATE TRIGGER categories_before_insert
+BEFORE INSERT ON categories
 FOR EACH ROW
 SET NEW.date_created = IFNULL(NEW.date_created, NOW());
 
-CREATE TRIGGER Categories_before_update
-BEFORE UPDATE ON Categories
+CREATE TRIGGER categories_before_update
+BEFORE UPDATE ON categories
 FOR EACH ROW
 SET NEW.date_modified = NOW();
 
-INSERT INTO Categories
-(Category_Name)
+INSERT INTO categories
+(category_name)
 VALUES
 ('Frozen Foods'),
 ('Drinks'),
@@ -42,28 +42,28 @@ VALUES
 
 
 -- TABLE SUPPLIERS
-CREATE TABLE Suppliers
-(ID INT PRIMARY KEY AUTO_INCREMENT,
-Supplier_Name VARCHAR(50) NOT NULL,
-Phone_Number CHAR(11) NOT NULL,
-Email VARCHAR(50) NOT NULL,
-Borough VARCHAR(40) NOT NULL,
-Date_Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-Date_Modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE suppliers
+(supplier_id INT PRIMARY KEY AUTO_INCREMENT,
+supplier_name VARCHAR(50) NOT NULL,
+phone_number CHAR(11) NOT NULL,
+email VARCHAR(50) NOT NULL,
+borough VARCHAR(40) NOT NULL,
+date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER Suppliers_before_insert
-BEFORE INSERT ON Suppliers
+CREATE TRIGGER suppliers_before_insert
+BEFORE INSERT ON suppliers
 FOR EACH ROW
 SET NEW.date_created = IFNULL(NEW.date_created, NOW());
 
-CREATE TRIGGER Suppliers_before_update
-BEFORE UPDATE ON SUPPLIERS
+CREATE TRIGGER suppliers_before_update
+BEFORE UPDATE ON suppliers
 FOR EACH ROW
 SET NEW.date_modified = NOW();
 
-INSERT INTO Suppliers
-(Supplier_Name, Phone_Number, Email, Borough)
+INSERT INTO suppliers
+(supplier_name, phone_number, email, borough)
 VALUES
 ('Jane', '07444444333', 'jane@sheerfrozenfoods.com', 'Barking'),
 ('Marcus', '07388899950', 'marcus@justfoods.com', 'Lewisham'),
@@ -81,37 +81,37 @@ VALUES
 
 
 -- TABLE PRODUCTS
-CREATE TABLE Products
-(ID INT PRIMARY KEY AUTO_INCREMENT,
-Product_Name VARCHAR(50) NOT NULL,
-Brand VARCHAR(50) NOT NULL,
-Weight CHAR(5) NOT NULL,
-Unit CHAR(2) NOT NULL,
-Price DECIMAL(5,2) NOT NULL,
-Category_ID INT,
-Supplier_ID INT,
-Date_Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-Date_Modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-CONSTRAINT fk_Category_ID
-FOREIGN KEY (Category_ID)
-REFERENCES Categories(ID),
-CONSTRAINT fk_Supplier_ID
-FOREIGN KEY (Supplier_ID)
-REFERENCES Suppliers(ID)
+CREATE TABLE products
+(product_id INT PRIMARY KEY AUTO_INCREMENT,
+product_name VARCHAR(50) NOT NULL,
+brand VARCHAR(50) NOT NULL,
+weight CHAR(5) NOT NULL,
+unit CHAR(2) NOT NULL,
+price DECIMAL(5,2) NOT NULL,
+category_id INT,
+supplier_id INT,
+date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+CONSTRAINT fk_category_id
+FOREIGN KEY (category_id)
+REFERENCES categories(category_id),
+CONSTRAINT fk_supplier_id
+FOREIGN KEY (supplier_id)
+REFERENCES suppliers(supplier_id)
 );
 
-CREATE TRIGGER Products_before_insert
-BEFORE INSERT ON Products
+CREATE TRIGGER products_before_insert
+BEFORE INSERT ON products
 FOR EACH ROW
 SET NEW.date_created = IFNULL(NEW.date_created, NOW());
 
-CREATE TRIGGER Products_before_update
-BEFORE UPDATE ON Products
+CREATE TRIGGER products_before_update
+BEFORE UPDATE ON products
 FOR EACH ROW
 SET NEW.date_modified = NOW();
 
-INSERT INTO PRODUCTS
-(Product_Name, Brand, Weight, Unit, Price, Category_ID, Supplier_ID)
+INSERT INTO products
+(product_name, brand, weight, unit, price, category_id, supplier_id)
 VALUES
 ('Chicken Wings', 'Pluvera', '1', 'KG', '1.99', '1', '1'),
 ('Chicken Drumsticks', 'Pluvera', '1', 'KG', '1.99', '1', '1'),
@@ -162,31 +162,31 @@ VALUES
 
 
 -- TABLE SALESPERSONS
-CREATE TABLE Salespersons
-(ID INT PRIMARY KEY AUTO_INCREMENT,
-First_Name VARCHAR(40) NOT NULL,
-Last_Name VARCHAR(40) NOT NULL,
-Email VARCHAR(50) NOT NULL,
-Phone_Number CHAR(11) NOT NULL,
-Number INT NOT NULL,
-Street VARCHAR(50) NOT NULL,
-District VARCHAR(50) NOT NULL,
-Date_Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-Date_Modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE salespersons
+(salesperson_id INT PRIMARY KEY AUTO_INCREMENT,
+first_name VARCHAR(40) NOT NULL,
+last_name VARCHAR(40) NOT NULL,
+email VARCHAR(50) NOT NULL,
+phone_number CHAR(11) NOT NULL,
+number INT NOT NULL,
+street VARCHAR(50) NOT NULL,
+district VARCHAR(50) NOT NULL,
+date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TRIGGER Salespersons_before_insert
-BEFORE INSERT ON Salespersons
+CREATE TRIGGER salespersons_before_insert
+BEFORE INSERT ON salespersons
 FOR EACH ROW
 SET NEW.date_created = IFNULL(new.date_created, NOW());
 
-CREATE TRIGGER Salespersons_before_update
-BEFORE UPDATE ON Salespersons
+CREATE TRIGGER salespersons_before_update
+BEFORE UPDATE ON salespersons
 FOR EACH ROW
 SET NEW.date_created = NOW();
 
-INSERT INTO Salespersons
-(First_Name, Last_Name, Email, Phone_Number, Number, Street, District)
+INSERT INTO salespersons
+(first_name, last_name, email, phone_number, number, street, district)
 VALUES
 ('Abdul', 'Jalal', 'abduljalal@gmail.com', '07544889922', '49', 'Swallow Avenue', 'Stratford'), 
 ('Julie', 'Peters', 'juliepeters@hotmail.com', '07211133355', '64', 'Plaistow Rd', 'Plaistow'), 
@@ -196,24 +196,24 @@ VALUES
 
 
 -- TABLE SALES
-CREATE TABLE Sales
-(ID INT,
-Sales_Date DATE,
-Salesperson_ID INT,
-Product_ID INT,
-Quantity INT,
-Salesamount DECIMAL(5,2),
-PRIMARY KEY(ID, Sales_Date),
-CONSTRAINT fk_Salesperson_ID
-FOREIGN KEY (Salesperson_ID)
-REFERENCES Salespersons(ID),
-CONSTRAINT fk_Product_ID
-FOREIGN KEY (Product_ID)
-REFERENCES Products(ID)
+CREATE TABLE sales
+(sales_id INT,
+sales_date DATE,
+salesperson_id INT,
+product_id INT,
+quantity INT,
+sales_amount DECIMAL(5,2),
+PRIMARY KEY(sales_id, sales_date),
+CONSTRAINT fk_salesperson_id
+FOREIGN KEY (salesperson_id)
+REFERENCES salespersons(salesperson_id),
+CONSTRAINT fk_product_id
+FOREIGN KEY (product_id)
+REFERENCES products(product_id)
 );
 
-INSERT INTO Sales
-(ID, Sales_Date, Salesperson_ID, Product_ID, Quantity, Salesamount)
+INSERT INTO sales
+(sales_id, sales_date, salesperson_id, product_id, quantity, sales_amount)
 VALUES
 ('1633', '2023-07-09', '1', '1', '2', '3.98'),
 ('1788', '2023-07-09', '1', '1', '5', '3.98'),
@@ -271,69 +271,69 @@ VALUES
 -- A QUERY WITH A LEFT JOIN TO EXTRACT ALL THE SALESPERSONS' IDs, FIRST NAMES, AND LAST NAMES FROM THE SALESPERSONS TABLE ON THE LEFT, AND WHERE THESE SPECIFIED DATA MATCH SALES_ID, SALES_DATE, AND SALESAMOUNT COLUMNS IN THE SALES TABLE.  
 -- Accordingly, this query returns a result set of all salespersons and sales transactions they have made.
 SELECT 
-	SP.ID as SalespersonID, 
-    SP.First_Name, 
-    SP.Last_Name, 
-    S.ID as SalesID, 
-    S.Sales_Date, 
-    S.Salesamount
+	sp.salesperson_id,
+    sp.first_name, 
+    sp.last_name, 
+    s.sales_id,
+    s.sales_date, 
+    s.sales_amount
 FROM
-	Salespersons SP
+	salespersons sp
 LEFT JOIN
-	Sales S
+	sales s
 ON 
-	SP.ID = S.Salesperson_ID;
+	sp.salesperson_id = s.salesperson_id;
 
 
 -- A VIEW THAT LOGICALLY COMBINES TWO TABLES: THE PRODUCTS AND SALES TABLE THAT ARE JOINED WITH AN INNER JOIN, IN A LOGICAL WAY
 CREATE VIEW vw_salesinfo
 AS
 SELECT
-	P.Category_ID, S.Product_ID, S.Salesperson_ID, S.Salesamount
+	p.category_id, s.product_id, s.salesperson_id, s.sales_amount
 FROM
-	Products P
+	products p
 JOIN
-	Sales S
+	sales s
 ON 
-	P.ID = S.Product_ID;
+	p.product_id = s.product_id;
 -- QUERYING THE VIEW
 SELECT * FROM vw_salesinfo;
 SELECT 
-	Product_ID,
-	Salesamount
+	product_id,
+	sales_amount
 FROM
 	   vw_salesinfo;
 
 -- A STORED FUNCTION NAMED 'PRODUCT DISCOUNT' THAT CALCULATES AND RETURNS THE RESULT SET FOR THE VALUE OF A 10% 'PRODUCTDISCOUNT' FOR EACH PRODUCT IN THE PRODUCTS TABLE
 DELIMITER //
-CREATE FUNCTION ExpressGrocery.ProductDiscount (Price NUMERIC(6,2))
+CREATE FUNCTION express_grocery.product_discount (price NUMERIC(6,2))
 RETURNS NUMERIC(6,2)
 DETERMINISTIC
 BEGIN
-RETURN (Price * 0.1);
+RETURN (price * 0.1);
 END//
 DELIMITER ;
 -- CALLING THE STORED FUNCTION 'PRODUCT DISCOUNT' WHILE QUERYING THE PRODUCTS TABLE
 SELECT 
-	ID,
-	Price,
-	ProductDiscount(PRICE) as Discount
+	product_id,
+	price,
+	product_discount(price) as discount
 FROM 
-	Products;
+	products;
 
 
 -- AN EXAMPLE QUERY WITH A SUBQUERY USED HERE TO DEMONSTRATES HOW TO EXTRACT THE ID AND AMOUNT OF THE PRODUCT WITH THE LEAST SALESAMOUNT FROM THE DATABASE
 -- THE SUBQUERY CALCULATES AND RETURNS A RESULT SET FOR THE MINIMUM SALESAMOUNT IN THE SALES TABLE
 -- AFTER WHICH THE OUTER QUERY SELECTS THE PRODUCT ID AND SALESAMOUNT FOR SALES WHERE THE SALESAMOUNT MATCHES THE MINIMUM SALESAMOUNT THE SUBQUERY IDENTIFIES  
 SELECT
-	Product_ID, 
-    Salesamount
+	product_id, 
+    sales_amount
 FROM
-	Sales
+	sales
 WHERE 
-	Salesamount = (SELECT MIN(SALESAMOUNT)
+	sales_amount = (SELECT MIN(sales_amount)
 FROM
-Sales);
+sales);
 
 
 -- ADVANCED OPTIONS
@@ -344,79 +344,79 @@ Sales);
 -- THE TRIGGER UPDATES THE DATE_MODIFIED COLUMN OF THE AFFECTED ROW IN THE CATEGORIES, PRODUCTS, SUPPLIERS, AND SALESPERSONS TABLES WITH THE CURRENT TIMESTAMP THE MOMENT EACH UPDATE IS EXECUTED 
 
 UPDATE 
-	Categories
+	categories
 SET 
-	Category_Name = 'Variety of Drinks'
+	category_name = 'Variety of Drinks'
 WHERE 
-	ID = 2;
+	category_id = 2;
 -- Querying the database for confirmation of update
 SELECT 
-	Category_Name 
+	category_name 
 FROM 
-	Categories
+	categories
 WHERE
-	ID = 2;
+	category_id = 2;
 
 UPDATE 
-	Suppliers
+	suppliers
 SET 
-	Supplier_Name = 'Zeus', 
-    Phone_Number = '07400012222', 
-    Email = 'zeus@gmail.com', 
-    Borough = 'Deptford'
+	supplier_name = 'Zeus', 
+    phone_number = '07400012222', 
+    email = 'zeus@gmail.com', 
+    borough = 'Deptford'
 WHERE 
-	ID = 6;
+	supplier_id = 6;
 -- Confirmation query
 SELECT
-	Supplier_Name,
-    Phone_Number,
-    Email,
-    Borough
+	supplier_name,
+    phone_number,
+    email,
+    borough
 FROM
-	Suppliers
+	suppliers
 WHERE 
-	ID = 6;
+	supplier_id = 6;
     
 
 UPDATE 
-	Products
+	products
 SET 
-	Product_Name = 'Pear', 
-	Brand = 'Solo Farms', 
-	Weight = '0.6', 
-    Unit = 'KG', 
-    Price = 5.75
+	product_name = 'Pear', 
+	brand = 'Solo Farms', 
+	weight = '0.6', 
+    unit = 'KG', 
+    price = 5.75
 WHERE 
-	ID = 37;
+	product_id = 37;
 -- Query confirmation
 SELECT
-	Product_Name,
-    Brand,
-    Weight,
-    Unit,
-    Price
+	product_name,
+    brand,
+    weight,
+    unit,
+    price
 FROM
-	Products
+	products
 WHERE
-	ID = 37;
+	product_id = 37;
 
 UPDATE 
-	Salespersons
+	salespersons
 SET 
-	Number = '77', 
-	Street = 'Beck Ham St', 
-	District = 'West Ham'
+	number = '77', 
+	street = 'Beck Ham St', 
+	district = 'West Ham'
 WHERE 
-	ID = 3;
+	salesperson_id = 3;
 -- Query confirmation
 SELECT
-	Number,
-    Street,
-    District
+	number,
+    street,
+    district
 FROM
-	Salespersons
+	salespersons
 WHERE
-	ID = 3;
+	salesperson_id = 3;
     
 
 
@@ -424,13 +424,13 @@ WHERE
 -- A QUERY TO EXTRACT THE NUMBER OF SALES FOR PRODUCTS BY SALESPERSONS WHOSE IDs ARE GREATER THAN TWO
 -- WHILE THE 'GROUP BY' GROUPS THE RESULT SET TO BE RETURNED, THE 'HAVING BY' FILTERS THE RESULT SET BY LIMITING IT TO THAT OF SALESPERSONS GREATER THAN TWO
 SELECT 
-	S.Product_ID, 
-	S.Salesperson_ID, 
-	COUNT(S.Salesamount) as 'Number of Sales'
+	s.product_id, 
+	s.salesperson_id, 
+	COUNT(s.sales_amount) AS num_of_sales
 FROM 
-	Sales as S
+	sales AS s
 GROUP BY 
-	S.Product_ID, 
-    S.Salesperson_ID 
+	s.product_id, 
+    s.salesperson_id
 HAVING 
-	S.Salesperson_ID > 2;
+	s.salesperson_id > 2;
