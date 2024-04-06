@@ -1,6 +1,6 @@
-- 👋 Hi, I’m @bukola-2023
-- 👀 I’m interested in data analytics
-- 🌱 I’m currently learning sql
+- 👋 Hi, I’m @bukolaolafenwa
+- 👀 I’m interested in coding
+- 🌱 I’m coding in sql and python
 - 💞️ I’m looking to collaborate on data analytics projects
 - 📫 How to reach me: bukolaolafenwa@gmail.com
 
