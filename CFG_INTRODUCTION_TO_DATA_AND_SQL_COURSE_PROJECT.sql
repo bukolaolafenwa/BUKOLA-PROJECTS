@@ -270,13 +270,18 @@ FROM
 
 -- A STORED FUNCTION NAMED 'PRODUCT DISCOUNT' THAT CALCULATES AND RETURNS THE RESULT SET FOR THE VALUE OF A 10% 'PRODUCTDISCOUNT' FOR EACH PRODUCT IN THE PRODUCTS TABLE
 DELIMITER //
-CREATE FUNCTION express_grocery.product_discount (price NUMERIC(6,2))
-RETURNS NUMERIC(6,2)
+
+CREATE FUNCTION express_grocery.product_discount(price DECIMAL(5,2))
+RETURNS DECIMAL(5,2)
 DETERMINISTIC
 BEGIN
-RETURN (price * 0.1);
+DECLARE product_discount DECIMAL(5,2);
+SET product_discount = price * 0.1;
+RETURN product_discount;
 END//
+
 DELIMITER ;
+
 -- CALLING THE STORED FUNCTION 'PRODUCT DISCOUNT' WHILE QUERYING THE PRODUCTS TABLE
 SELECT 
 	product_id,
@@ -302,96 +307,29 @@ sales AS s);
 
 -- ADVANCED OPTIONS
 -- TRIGGERS FOR THE CATEGORIES TABLE AND AN EXAMPLE QUERY WITH GROUP BY AND HAVING
-CREATE TRIGGER categories_before_insert
-BEFORE INSERT ON categories
-FOR EACH ROW
-SET NEW.date_created = IFNULL(NEW.date_created, NOW());
 
-CREATE TRIGGER categories_before_update
+
+-- A trigger
+-- Before Update Trigger on Categories Table.
+-- This prevents the category nam from being updated if there are existing products associated with that category in the products table.
+DELIMITER //
+CREATE TRIGGER prevent_category_update
 BEFORE UPDATE ON categories
 FOR EACH ROW
-SET NEW.date_modified = NOW();
+BEGIN
+    IF (SELECT COUNT(*) FROM products WHERE category_id = OLD.category_id) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Cannot update category name. Products exist for this category.';
+    END IF;
+END//
+DELIMITER ;
 
+-- confirming the prevention by the trigger
+UPDATE categories
+SET category_name = "Poultry_foods"
+WHERE category_id = 1;
 
-
--- SAMPLE UPDATES PROVING THAT UPDATES WORK IN THE CATEGORIES, PRODUCTS, SUPPLIERS, AND SALESPERSONS TABLES.
-
-UPDATE 
-	categories
-SET 
-	category_name = 'Variety of Drinks'
-WHERE 
-	category_id = 2;
--- Querying the database for confirmation of update
-SELECT 
-	c.category_name 
-FROM 
-	categories AS c
-WHERE
-	c.category_id = 2;
-
-UPDATE 
-	suppliers
-SET 
-	supplier_name = 'Zeus', 
-    phone_number = '07400012222', 
-    email = 'zeus@gmail.com', 
-    borough = 'Deptford'
-WHERE 
-	supplier_id = 6;
--- Confirmation query
-SELECT
-	su.supplier_name,
-    su.phone_number,
-    su.email,
-    su.borough
-FROM
-	suppliers AS su
-WHERE 
-	su.supplier_id = 6;
     
-
-UPDATE 
-	products
-SET 
-	product_name = 'Pear', 
-	brand = 'Solo Farms', 
-	weight = '0.6', 
-    unit = 'KG', 
-    price = 5.75
-WHERE 
-	product_id = 37;
--- Query confirmation
-SELECT
-	p.product_name,
-    p.brand,
-    p.weight,
-    p.unit,
-    p.price
-FROM
-	products AS p
-WHERE
-	p.product_id = 37;
-
-UPDATE 
-	salespersons
-SET 
-	number = '77', 
-	street = 'Beck Ham St', 
-	district = 'West Ham'
-WHERE 
-	salesperson_id = 3;
--- Query confirmation
-SELECT
-	sp.number,
-    sp.street,
-    sp.district
-FROM
-	salespersons AS sp
-WHERE
-	sp.salesperson_id = 3;
-    
-
 
 -- AN EXAMPLE QUERY WITH GROUP BY AND HAVING
 -- A QUERY TO EXTRACT ID, SALESPERSONS AND NUMBER OF SALES FOR PRODUCTS WHOSE SALESPERSONS' IDs ARE GREATER THAN TWO
